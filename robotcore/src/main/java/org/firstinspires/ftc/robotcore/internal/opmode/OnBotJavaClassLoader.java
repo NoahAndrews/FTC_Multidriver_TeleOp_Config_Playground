@@ -160,21 +160,41 @@ public class OnBotJavaClassLoader extends ClassLoader implements Closeable
     // ClassLoader interface
     //----------------------------------------------------------------------------------------------
 
-    @Override
-    protected Class<?> loadClass(String className, boolean resolveIgnoredOnAndroid) throws ClassNotFoundException
+        @Override
+        protected Class<?> loadClass(String className, boolean resolveIgnoredOnAndroid) throws ClassNotFoundException
         {
-            throw new ClassNotFoundException(className);
+            final Class<?> onBotJavaClass = loadClassFromOnBotJavaJars(className);
+            if (onBotJavaClass != null)
+            {
+                return onBotJavaClass;
+            }
+            return super.loadClass(className, resolveIgnoredOnAndroid);
         }
 
-    @Override
-    @NonNull
-    protected Class<?> findClass(String className) throws ClassNotFoundException
+        @Override
+        @NonNull
+        protected Class<?> findClass(String className) throws ClassNotFoundException
         {
-            throw new ClassNotFoundException(className);
+            final Class<?> onBotJavaClass = loadClassFromOnBotJavaJars(className);
+            if (onBotJavaClass == null)
+            {
+                throw new ClassNotFoundException(className);
+            }
+            return onBotJavaClass;
         }
 
-    protected @Nullable Class<?> loadClassFromOnBotJavaJars(String className) throws ClassNotFoundException
+        protected @Nullable Class<?> loadClassFromOnBotJavaJars(String className) throws ClassNotFoundException
         {
-            throw new ClassNotFoundException(className);
+            for (DexFile dexFile : dexFiles)
+            {
+                Class clazz = dexFile.loadClass(className, this);
+                if (clazz != null)
+                {
+                    RobotLog.vv(TAG, "loaded %s from %s", clazz.getName(), dexFile.getName());
+                    return clazz;
+                }
+            }
+
+            return null;
         }
     }
