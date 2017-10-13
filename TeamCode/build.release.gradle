@@ -1,8 +1,8 @@
 dependencies {
     compile project(':FtcRobotController')
-    compile project(':robotcore')
+    compile project(':robotcore') //modified for lite
     compile (name: 'Hardware-release', ext: 'aar')
-    compile (name: 'FtcCommon-release', ext: 'aar')
+    compile project(':FtcCommon') //modified for lite
     compile (name:'Analytics-release', ext:'aar')
     compile (name:'WirelessP2p-release', ext:'aar')
 }

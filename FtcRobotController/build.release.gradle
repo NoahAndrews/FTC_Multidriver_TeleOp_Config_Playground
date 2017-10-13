@@ -3,7 +3,7 @@ dependencies {
     compile (name:'Inspection-release', ext: 'aar')
     //modified for lite: removed blocks and replaced robotcore aar with module
     compile (name:'Hardware-release', ext: 'aar')
-    compile (name:'FtcCommon-release', ext: 'aar')
+    compile project(':FtcCommon') // modified for lite
     compile (name:'Analytics-release', ext:'aar')
     compile (name:'WirelessP2p-release', ext:'aar')
 }
