@@ -105,8 +105,7 @@ import org.firstinspires.ftc.robotcore.internal.system.ServiceController;
 import org.firstinspires.ftc.robotcore.internal.ui.LocalByRefIntentExtraHolder;
 import org.firstinspires.ftc.robotcore.internal.ui.ThemedActivity;
 import org.firstinspires.ftc.robotcore.internal.ui.UILocation;
-import org.firstinspires.ftc.robotcore.internal.webserver.RobotControllerWebInfo;
-import org.firstinspires.ftc.robotcore.internal.webserver.WebServer;
+//modified for lite: removed 2 webserver imports
 import org.firstinspires.inspection.RcInspectionActivity;
 
 import java.util.Queue;
@@ -450,34 +449,14 @@ public class FtcRobotControllerActivity extends Activity
   public boolean onOptionsItemSelected(MenuItem item) {
     int id = item.getItemId();
 
-    if (id == R.id.action_programming_mode) {
-      if (cfgFileMgr.getActiveConfig().isNoConfig()) {
-        // Tell the user they must configure the robot before starting programming mode.
-        // TODO: as we are no longer truly 'modal' this warning should be adapted
-        AppUtil.getInstance().showToast(UILocation.BOTH, context, context.getString(R.string.toastConfigureRobotBeforeProgrammingMode));
-      } else {
-        Intent programmingModeIntent = new Intent(AppUtil.getDefContext(), ProgrammingModeActivity.class);
-        programmingModeIntent.putExtra(
-            LaunchActivityConstantsList.PROGRAMMING_MODE_ACTIVITY_PROGRAMMING_WEB_HANDLERS,
-            new LocalByRefIntentExtraHolder(programmingWebHandlers));
-        startActivity(programmingModeIntent);
-      }
-      return true;
-    } else if (id == R.id.action_program_and_manage) {
-      Intent programmingModeIntent = new Intent(AppUtil.getDefContext(), ProgramAndManageActivity.class);
-      RobotControllerWebInfo webInfo = programmingWebHandlers.getWebServer().getConnectionInformation();
-      programmingModeIntent.putExtra(LaunchActivityConstantsList.RC_WEB_INFO, webInfo.toJson());
-      startActivity(programmingModeIntent);
-    } else if (id == R.id.action_inspection_mode) {
+    // modified for lite: removed handling options programming menu items
+
+    if (id == R.id.action_inspection_mode) {
       Intent inspectionModeIntent = new Intent(AppUtil.getDefContext(), RcInspectionActivity.class);
       startActivity(inspectionModeIntent);
       return true;
     }
-    else if (id == R.id.action_blocks) {
-      Intent blocksIntent = new Intent(AppUtil.getDefContext(), BlocksActivity.class);
-      startActivity(blocksIntent);
-      return true;
-    }
+    // modified for lite: Removed handling for blocks programming menu item
     else if (id == R.id.action_restart_robot) {
       dimmer.handleDimTimer();
       AppUtil.getInstance().showToast(UILocation.BOTH, context, context.getString(R.string.toastRestartingRobot));
@@ -537,12 +516,7 @@ public class FtcRobotControllerActivity extends Activity
 
     updateUIAndRequestRobotSetup();
     programmingWebHandlers.setState(new FtcRobotControllerServiceState() {
-      @NonNull
-      @Override
-      public WebServer getWebServer() {
-        return service.getWebServer();
-      }
-
+      // modified for lite: Removed definition for deleted interface method
       @Override
       public EventLoopManager getEventLoopManager() {
         return service.getRobot().eventLoopManager;
