@@ -66,7 +66,7 @@ public class OnBotJavaClassLoader extends ClassLoader implements Closeable
     // State
     //----------------------------------------------------------------------------------------------
 
-    public static final String TAG = "OnBotJava:ClassLoader"; //modified for lite
+    public static final String TAG = "OnBotJava:ClassLoader"; //modified for lite: referenced a tag from a deleted class
 
     protected List<File>    jarFiles;
     protected List<DexFile> dexFiles;
@@ -77,7 +77,7 @@ public class OnBotJavaClassLoader extends ClassLoader implements Closeable
 
     public OnBotJavaClassLoader()
         {
-        this(OnBotJavaClassLoader.class.getClassLoader(), null);
+        this(OnBotJavaClassLoader.class.getClassLoader(), new ArrayList<File>()); //modified for lite: we don't have any OnBot classes to pass in
         }
 
     public OnBotJavaClassLoader(ClassLoader parentClassLoader, List<File> jarFiles)
@@ -86,9 +86,36 @@ public class OnBotJavaClassLoader extends ClassLoader implements Closeable
 
         this.jarFiles = new ArrayList<File>();
         this.dexFiles = new ArrayList<DexFile>();
+        this.jarFiles.addAll(jarFiles);
+        for (File jarFile : this.jarFiles)
+        {
+            if (jarFile.canRead())  // make sure it really exists
+            {
+                try {
+                    this.dexFiles.add(openDexFile(jarFile));
+                }
+                catch (IOException e)
+                {
+                    // One reason for the exception is the jar file that results from compiling
+                    // zero .java files is (apparently) unopenable
+                    RobotLog.ee(TAG, e, "unable to open \"%s\"; ignoring", jarFile.getAbsolutePath());
+                }
+            }
+            else
+            {
+                RobotLog.ww(TAG, "unable to read \"%s\"; ignoring", jarFile.getAbsolutePath());
+            }
         }
+    }
 
-    public void close() { }
+    public void close()
+    {
+        for (DexFile dexFile : dexFiles)
+        {
+            closeDexFile(dexFile);
+        }
+        dexFiles.clear();   // make idempotent
+    }
 
     protected static File getDexCacheDir()
         {
@@ -125,7 +152,7 @@ public class OnBotJavaClassLoader extends ClassLoader implements Closeable
 
     public static boolean isOnBotJava(Class clazz)
         {
-        return false;
+        return false; // modified for lite: It can't be an OnBotJava class, so just return false
         }
 
     public List<File> getJarFiles()

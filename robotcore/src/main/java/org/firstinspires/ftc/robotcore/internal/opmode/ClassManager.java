@@ -65,8 +65,6 @@ import dalvik.system.DexFile;
 @SuppressWarnings("WeakerAccess")
 public class ClassManager {
 
-    //TODO: Performance of this class could be improved on some level by removing OnBotJava stuff //modified for lite
-
     //----------------------------------------------------------------------------------------------
     // State
     //----------------------------------------------------------------------------------------------
