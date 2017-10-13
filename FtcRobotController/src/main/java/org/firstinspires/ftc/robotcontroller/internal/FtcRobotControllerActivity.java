@@ -56,11 +56,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.blocks.ftcrobotcontroller.BlocksActivity;
-import com.google.blocks.ftcrobotcontroller.ProgrammingModeActivity;
-import com.google.blocks.ftcrobotcontroller.ProgrammingModeControllerImpl;
-import com.google.blocks.ftcrobotcontroller.ProgrammingWebHandlers;
-import com.google.blocks.ftcrobotcontroller.runtime.BlocksOpMode;
+//modified for lite: removed blockly imports
 import com.qualcomm.ftccommon.AboutActivity;
 import com.qualcomm.ftccommon.ClassManagerFactory;
 import com.qualcomm.ftccommon.FtcEventLoop;
@@ -123,8 +119,7 @@ public class FtcRobotControllerActivity extends Activity
   protected WifiManager.WifiLock wifiLock;
   protected RobotConfigFileManager cfgFileMgr;
 
-  protected ProgrammingWebHandlers programmingWebHandlers;
-  protected ProgrammingModeController programmingModeController;
+  //modified for lite: removed variables related to "programming mode"
 
   protected UpdateUI.Callback callback;
   protected Context context;
@@ -259,7 +254,7 @@ public class FtcRobotControllerActivity extends Activity
       }
     });
 
-    BlocksOpMode.setActivityAndWebView(this, (WebView) findViewById(R.id.webViewBlocksRuntime));
+    //modified for lite: removed setup line for Blockly
 
     ClassManagerFactory.registerFilters();
     ClassManagerFactory.processAllClasses();
@@ -283,9 +278,7 @@ public class FtcRobotControllerActivity extends Activity
     dimmer = new Dimmer(this);
     dimmer.longBright();
 
-    programmingWebHandlers = new ProgrammingWebHandlers();
-    programmingModeController = new ProgrammingModeControllerImpl(
-            this, (TextView) findViewById(R.id.textRemoteProgrammingMode), programmingWebHandlers);
+    // modified for lite: removed variable initialization for programming mode
 
     updateUI = createUpdateUI();
     callback = createUICallback(updateUI);
@@ -351,9 +344,7 @@ public class FtcRobotControllerActivity extends Activity
   protected void onPause() {
     super.onPause();
     RobotLog.vv(TAG, "onPause()");
-    if (programmingModeController.isActive()) {
-      programmingModeController.stopProgrammingMode();
-    }
+    //modified for lite: We don't need to stop the programming mode when the app is paused
   }
 
   @Override
@@ -402,7 +393,7 @@ public class FtcRobotControllerActivity extends Activity
     RobotLog.logBuildConfig(com.qualcomm.robotcore.BuildConfig.class);
     RobotLog.logBuildConfig(com.qualcomm.hardware.BuildConfig.class);
     RobotLog.logBuildConfig(com.qualcomm.ftccommon.BuildConfig.class);
-    RobotLog.logBuildConfig(com.google.blocks.BuildConfig.class);
+    //modified for lite: don't log the blocks version
     RobotLog.logBuildConfig(org.firstinspires.inspection.BuildConfig.class);
   }
 
@@ -515,13 +506,7 @@ public class FtcRobotControllerActivity extends Activity
     updateUI.setControllerService(controllerService);
 
     updateUIAndRequestRobotSetup();
-    programmingWebHandlers.setState(new FtcRobotControllerServiceState() {
-      // modified for lite: Removed definition for deleted interface method
-      @Override
-      public EventLoopManager getEventLoopManager() {
-        return service.getRobot().eventLoopManager;
-      }
-    });
+    // modified for lite: removed state update for "programmingWebHandlers"
   }
 
   private void updateUIAndRequestRobotSetup() {

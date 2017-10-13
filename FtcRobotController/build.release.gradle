@@ -1,7 +1,7 @@
 dependencies {
     compile project(':robotcore')
     compile (name:'Inspection-release', ext: 'aar')
-    compile (name:'Blocks-release', ext: 'aar')
+    //modified for lite: removed blocks and replaced robotcore aar with module
     compile (name:'Hardware-release', ext: 'aar')
     compile (name:'FtcCommon-release', ext: 'aar')
     compile (name:'Analytics-release', ext:'aar')
