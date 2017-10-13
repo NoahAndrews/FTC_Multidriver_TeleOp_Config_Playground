@@ -46,12 +46,10 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -66,7 +64,6 @@ import com.qualcomm.ftccommon.FtcRobotControllerService.FtcRobotControllerBinder
 import com.qualcomm.ftccommon.FtcRobotControllerSettingsActivity;
 import com.qualcomm.ftccommon.LaunchActivityConstantsList;
 import com.qualcomm.ftccommon.LaunchActivityConstantsList.RequestCode;
-import com.qualcomm.ftccommon.ProgrammingModeController;
 import com.qualcomm.ftccommon.Restarter;
 import com.qualcomm.ftccommon.UpdateUI;
 import com.qualcomm.ftccommon.configuration.EditParameters;
@@ -75,8 +72,6 @@ import com.qualcomm.ftccommon.configuration.RobotConfigFile;
 import com.qualcomm.ftccommon.configuration.RobotConfigFileManager;
 import com.qualcomm.ftcrobotcontroller.R;
 import com.qualcomm.hardware.HardwareFactory;
-import com.qualcomm.robotcore.eventloop.EventLoopManager;
-import com.qualcomm.robotcore.eventloop.opmode.FtcRobotControllerServiceState;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeRegister;
 import com.qualcomm.robotcore.hardware.configuration.LynxConstants;
 import com.qualcomm.robotcore.hardware.configuration.Utility;
@@ -89,7 +84,7 @@ import com.qualcomm.robotcore.wifi.WifiDirectAssistant;
 
 import org.firstinspires.ftc.ftccommon.external.SoundPlayingRobotMonitor;
 import org.firstinspires.ftc.ftccommon.internal.FtcRobotControllerWatchdogService;
-import org.firstinspires.ftc.ftccommon.internal.ProgramAndManageActivity;
+// modified for lite: removed ProgramAndManageActivity import
 import org.firstinspires.ftc.robotcore.internal.hardware.DragonboardLynxDragonboardIsPresentPin;
 import org.firstinspires.ftc.robotcore.internal.network.DeviceNameManager;
 import org.firstinspires.ftc.robotcore.internal.network.PreferenceRemoterRC;
@@ -98,7 +93,6 @@ import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import org.firstinspires.ftc.robotcore.internal.system.Assert;
 import org.firstinspires.ftc.robotcore.internal.system.PreferencesHelper;
 import org.firstinspires.ftc.robotcore.internal.system.ServiceController;
-import org.firstinspires.ftc.robotcore.internal.ui.LocalByRefIntentExtraHolder;
 import org.firstinspires.ftc.robotcore.internal.ui.ThemedActivity;
 import org.firstinspires.ftc.robotcore.internal.ui.UILocation;
 //modified for lite: removed 2 webserver imports
@@ -533,8 +527,8 @@ public class FtcRobotControllerActivity extends Activity
     factory = hardwareFactory;
 
     OpModeRegister userOpModeRegister = createOpModeRegister();
-    eventLoop = new FtcEventLoop(factory, userOpModeRegister, callback, this, programmingModeController);
-    FtcEventLoopIdle idleLoop = new FtcEventLoopIdle(factory, userOpModeRegister, callback, this, programmingModeController);
+    eventLoop = new FtcEventLoop(factory, userOpModeRegister, callback, this);
+    FtcEventLoopIdle idleLoop = new FtcEventLoopIdle(factory, userOpModeRegister, callback, this);
 
     controllerService.setCallback(callback);
     controllerService.setupRobot(eventLoop, idleLoop);

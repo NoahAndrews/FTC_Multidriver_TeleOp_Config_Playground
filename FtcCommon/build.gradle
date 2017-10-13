@@ -31,4 +31,5 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':robotcore')
     implementation (name: 'Hardware-release', ext: 'aar')
+    implementation (name: 'Inspection-release', ext: 'aar')
 }

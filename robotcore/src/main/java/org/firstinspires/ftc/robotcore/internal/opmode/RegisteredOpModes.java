@@ -40,7 +40,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpModeRegister;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Supplier;
-import org.firstinspires.ftc.robotcore.internal.files.RecursiveFileObserver;
+//modified for lite: removed file watcher imports
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import org.firstinspires.ftc.robotcore.internal.system.Assert;
 
@@ -57,8 +57,6 @@ import java.util.Map;
 @SuppressWarnings("WeakerAccess")
 public class RegisteredOpModes implements OpModeManager
     {
-
-    // Some OnBotJava stuff was deleted from this class //modified for lite
 
     //----------------------------------------------------------------------------------------------
     // State
@@ -80,8 +78,7 @@ public class RegisteredOpModes implements OpModeManager
 
     protected final List<InstanceOpModeRegistrar> instanceOpModeRegistrars = new ArrayList<InstanceOpModeRegistrar>();
 
-    protected RecursiveFileObserver blocksOpModeMonitor;
-    protected volatile boolean      blocksOpModesChanged;
+    // modified for lite: removed file watcher objects for OnBot and Blockly
 
     //----------------------------------------------------------------------------------------------
     // Construction
@@ -89,39 +86,10 @@ public class RegisteredOpModes implements OpModeManager
 
     public RegisteredOpModes()
         {
-            // Setup Blocks monitoring system
-            blocksOpModesChanged = false;
-            final int blocksOpModeMonitorAccess = RecursiveFileObserver.CLOSE_WRITE | RecursiveFileObserver.DELETE | RecursiveFileObserver.MOVED_FROM | RecursiveFileObserver.MOVED_TO;
-            blocksOpModeMonitor = new RecursiveFileObserver(AppUtil.BLOCK_OPMODES_DIR, blocksOpModeMonitorAccess, RecursiveFileObserver.Mode.NONRECURSVIVE, new RecursiveFileObserver.Listener()
-                {
-                @Override
-                public void onEvent(int event, File file)
-                    {
-                    if ((event & blocksOpModeMonitorAccess) != 0)
-                        {
-                        if (file.getName().endsWith(AppUtil.BLOCKS_JS_EXT) || file.getName().endsWith(AppUtil.BLOCKS_BLK_EXT))
-                            {
-                            RobotLog.vv(TAG, "noting that Blocks changed");
-                            blocksOpModesChanged = true;
-                            }
-                        }
-                    }
-                });
-            blocksOpModeMonitor.startWatching();
+            //modified for lite: removed file monitoring code for blocks and OnBot
         }
 
-    //----------------------------------------------------------------------------------------------
-    // Change management
-    //----------------------------------------------------------------------------------------------
-
-    public boolean getBlocksOpModesChanged()
-        {
-        return blocksOpModesChanged;
-        }
-    public void clearBlocksOpModesChanged()
-        {
-        blocksOpModesChanged = false;
-        }
+    // modified for lite: removed "change management" section with public methods for monitoring new opmodes
 
     //----------------------------------------------------------------------------------------------
     // OpMode management
